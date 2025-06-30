@@ -546,8 +546,8 @@ extern const char kErrprintfDecompress[];
 #ifdef _WIN32
   // must compile with -std=gnu++11, not c++11, on 32-bit Windows since
   // otherwise fseeko64 not defined...
-#  define fseeko _fseeko64
-#  define ftello _ftello64
+#  define fseeko _fseeki64
+#  define ftello _ftelli64
 #  define FOPEN_RB "rb"
 #  define FOPEN_WB "wb"
 #  define FOPEN_AB "ab"
