@@ -16,7 +16,9 @@
 
 #include "plink2_memory.h"
 
-#include <unistd.h>  // sysconf()
+#ifndef _WIN32
+  #include <unistd.h>  // sysconf()
+#endif
 #ifdef __APPLE__
 #  include <sys/sysctl.h>  // sysctl()
 #endif

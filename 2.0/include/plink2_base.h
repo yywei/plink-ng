@@ -87,12 +87,6 @@
 #  endif
 #endif
 
-#if (__GNUC__ < 4)
-// may eventually add MSVC support to gain access to MKL on Windows, but can't
-// justify doing that before all major features are implemented.
-#  error "gcc 4.x+ or clang equivalent required."
-#endif
-
 // The -Wshorten-64-to-32 diagnostic forces the code to be cluttered with
 // meaningless uintptr_t -> uint32_t static casts (number known to be < 2^32,
 // just stored in a uintptr_t because there's no speed penalty and we generally
@@ -102,6 +96,14 @@
 // out on the few occasions where inappropriate silent truncation is suspected.
 #ifdef __clang__
 #  pragma clang diagnostic ignored "-Wshorten-64-to-32"
+#elif defined(__GNUC__)
+#  if (__GNUC__ < 4)
+#    error "gcc 4.x+ or clang equivalent required."
+#  endif
+#elif defined(_MSC_VER)
+// may eventually add MSVC support to gain access to MKL on Windows, but can't
+// justify doing that before all major features are implemented.
+#  error "gcc 4.x+ or clang equivalent required."
 #endif
 
 // 10000 * major + 100 * minor + patch
@@ -544,8 +546,8 @@ extern const char kErrprintfDecompress[];
 #ifdef _WIN32
   // must compile with -std=gnu++11, not c++11, on 32-bit Windows since
   // otherwise fseeko64 not defined...
-#  define fseeko fseeko64
-#  define ftello ftello64
+#  define fseeko _fseeko64
+#  define ftello _ftello64
 #  define FOPEN_RB "rb"
 #  define FOPEN_WB "wb"
 #  define FOPEN_AB "ab"

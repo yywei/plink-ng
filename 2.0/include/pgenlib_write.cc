@@ -19,7 +19,6 @@
 #include <assert.h>
 #include <limits.h>
 #include <stdlib.h>
-#include <unistd.h>  // unlink()
 
 #include "plink2_bits.h"
 
@@ -2517,7 +2516,7 @@ PglErr PwcFinish(PgenWriterCommon* pwcp, FILE** pgen_outfile_ptr, FILE** pgi_or_
     }
   }
   if (unlikely(fclose_null(pgen_outfile_ptr) ||
-               unlink(*fname_buf_ptr) ||
+               remove(*fname_buf_ptr) ||
                fclose_null(header_ff_ptr))) {
     return kPglRetWriteFail;
   }
